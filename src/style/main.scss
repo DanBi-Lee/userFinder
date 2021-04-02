@@ -1,4 +1,16 @@
+@charset 'utf-8';
+@import  './base/reset';
+@import  './base/common';
+
 body {
     display: flex;
-    background: red;
+    justify-content: center;
+    background-color: #ddd;
+}
+
+#app {
+    min-width: 320px;
+    width: 100%;
+    max-width: 560px;
+    background-color: #fff;
 }
