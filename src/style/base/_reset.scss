@@ -36,6 +36,21 @@
     list-style: none;
   }
   
+  fieldset {
+    border: none;
+  }
+
+  legend {
+    display: block;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    position: relative;
+    z-index: -9999;
+    top: -9999px;
+    left: -9999px;
+  }
+
   input {
     outline: none;
   }

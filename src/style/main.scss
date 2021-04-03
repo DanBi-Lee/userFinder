@@ -6,11 +6,145 @@ body {
     display: flex;
     justify-content: center;
     background-color: #ddd;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 #app {
+    display: flex;
+    flex-direction: column;
     min-width: 320px;
     width: 100%;
     max-width: 560px;
     background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 16px rgba(0,0,0,0.3);
+}
+
+.header-box {
+    display: flex;
+    flex-shrink: 0;
+    height: 60px;
+    align-items: center;
+    font-size: map-get($font, title);
+    font-weight: 700;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid map-get($map: $color, $key: gray);
+
+    .point {
+        color: map-get($map: $color, $key: primary);
+    }
+}
+
+.tab-box {
+    height: 48px;
+    padding: 0px 20px;
+
+    button {
+        height: inherit;
+        padding: 0px 20px;
+        color: #999;
+        box-sizing: border-box;
+
+        & + button {
+            margin-left: 20px;
+        }
+
+        &.active {
+            font-weight: 700;
+            color : map-get($map: $color, $key: primary);
+            border-bottom: 2px solid;
+        }
+    }
+}
+
+.search-box {
+    height: 56px;
+    margin-top: 20px;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    
+    fieldset{
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .search-input {
+        display: block;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        color: #999;
+        padding: 0px 66px 0px 20px;
+        box-sizing: border-box;
+        font-size: map-get($map: $font, $key: main);
+        border: 1px solid;
+        border-radius: 4px;
+    }
+
+    .search-button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 56px;
+        height: 56px;
+
+        img {
+            width: 28px;
+            filter : invert(52%) sepia(81%) saturate(17%) hue-rotate(22deg) brightness(100%) contrast(94%);
+        }
+    }
+}
+
+.search-result {
+    padding: 20px;
+    margin: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+
+    .item {
+        display: flex;
+        align-items: center;
+
+        .thumb {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .user-name {
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+
+        .favorite-button {
+            width: 32px;
+            height: 32px;
+            color: #999;
+            filter : invert(52%) sepia(81%) saturate(17%) hue-rotate(22deg) brightness(100%) contrast(94%);
+            border: 1px solid;
+            padding: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        & + .item {
+            margin-top: 20px;
+        }
+    }
+}
+
+@media screen and(max-width: 560px) {
+    body {
+        padding: 0px;
+    }
+    
+    #app {
+        border-radius: unset;
+    }
 }
