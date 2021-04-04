@@ -5,7 +5,7 @@ import TabBox from "./components/TabBox";
 
 class App {
   data = {
-    type: "FAVORITE",
+    type: "GITHUB",
   };
 
   constructor(target) {
@@ -31,9 +31,11 @@ class App {
     new TabBox(this.target, this.handlingTabMenu, this.data.type);
 
     switch (this.data.type) {
+      // 즐겨찾기 검색
       case "FAVORITE":
         new FavoriteUserSearchBox(this.target, this.data.type);
         break;
+      // github 전체 사용자 검색
       case "GITHUB":
         new GithubUsersSearchBox(this.target, this.data.type);
         break;

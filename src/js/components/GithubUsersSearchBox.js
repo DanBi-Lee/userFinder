@@ -1,3 +1,4 @@
+import { getUsers } from "../util/search";
 import SearchBox from "./SearchBox";
 import SearchResult from "./SearchResult";
 
@@ -8,9 +9,20 @@ class GithubUsersSearchBox {
     this.render();
   }
 
+  searchOnGithub = async (e) => {
+    e.preventDefault();
+    const data = await getUsers(e.target.querySelector("#searchInput").value);
+    this.setSearchResult(data);
+  };
+
+  setSearchResult = (data) => {
+    const userList = data.items;
+    this.serachResult.setData(userList);
+  };
+
   render() {
-    new SearchBox(this.target, this.type);
-    new SearchResult(this.target);
+    this.searchBox = new SearchBox(this.target, this.type, this.searchOnGithub);
+    this.serachResult = new SearchResult(this.target);
   }
 }
 

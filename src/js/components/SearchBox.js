@@ -1,15 +1,25 @@
 import searchIcon from "../../images/search.svg";
 
 class SearchBox {
-  constructor(target, type) {
+  constructor(target, type, onSearch) {
     this.target = target;
     this.type = type;
+    this.onSearch = onSearch;
     this.form = document.createElement("form");
     this.form.classList = "search-box";
     this.target.appendChild(this.form);
 
+    this.init();
     this.render();
   }
+
+  init = () => {
+    this.searchEvent();
+  };
+
+  searchEvent = () => {
+    this.form.addEventListener("submit", this.onSearch);
+  };
 
   render = () => {
     return (this.form.innerHTML = `

@@ -35,6 +35,14 @@ class SearchResult {
     this.render(this.data.searchResult);
   }
 
+  setData = (data) => {
+    this.data = {
+      ...this.data,
+      searchResult: data,
+    };
+    this.render(this.data.searchResult);
+  };
+
   render(data) {
     return (this.searchResult.innerHTML = data
       .map((item) => {
