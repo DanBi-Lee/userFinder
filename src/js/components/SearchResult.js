@@ -7,8 +7,9 @@ class SearchResult {
     searchResult: [],
   };
 
-  constructor(target, userList) {
+  constructor(target, type, userList) {
     this.target = target;
+    this.type = type;
     this.data.searchResult = userList || [];
     this.searchResult = document.createElement("section");
     this.searchResult.classList = "search-result";
@@ -65,11 +66,11 @@ class SearchResult {
           "favoriteData",
           JSON.stringify({ ...favoriteData, [data.id]: false })
         );
+        this.type === "FAVORITE" && button.closest(".item").remove();
         break;
       default:
         throw new Error("정의되지 않은 커맨드");
     }
-    console.log("list", list);
   };
 
   setData = (data) => {

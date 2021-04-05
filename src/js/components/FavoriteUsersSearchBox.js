@@ -13,7 +13,7 @@ class FavoriteUserSearchBox {
 
   render() {
     new SearchBox(this.target, this.type);
-    new SearchResult(this.target, this.userlist);
+    new SearchResult(this.target, this.type, this.userlist);
   }
 }
 
