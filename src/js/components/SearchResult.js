@@ -1,6 +1,8 @@
 import favoriteOff from "../../images/favorite-off.svg";
 import favoriteOn from "../../images/favorite-on.svg";
 import { favoriteData, favoriteList } from "../util/favorite";
+import { customCompare } from "../util/sortString";
+import { getInitial, checkHangul } from "../util/stringHandling";
 
 class SearchResult {
   data = {
@@ -81,11 +83,41 @@ class SearchResult {
     this.render(this.data.searchResult);
   };
 
+  getFirstLetter = (username) => {
+    let firstLetter;
+    const code = username.toLowerCase().charCodeAt(0);
+    if (checkHangul(code)) {
+      firstLetter = getInitial(username);
+    } else {
+      firstLetter = username[0].toUpperCase();
+    }
+
+    const header = `<div class="letter-header">${firstLetter}</div>`;
+    return header;
+  };
+
+  setFirstLetterHeader = (user, index) => {
+    let header = "";
+    if (index === 0) {
+      header = this.getFirstLetter(user.login);
+    } else if (
+      this.getFirstLetter(user.login) !==
+      this.getFirstLetter(this.data.searchResult[index - 1].login)
+    ) {
+      header = this.getFirstLetter(user.login);
+    }
+
+    return header;
+  };
+
   render(data) {
     const isFavoriteData = favoriteData();
     return (this.searchResult.innerHTML = data
-      .map((item) => {
+      .sort((a, b) => customCompare(a.login, b.login))
+      .map((item, index) => {
+        let header = this.setFirstLetterHeader(item, index);
         return `
+        ${header}
         <article class="item">
           <img class="thumb" src="${item.avatar_url}" alt="thumbnail" />
           <p class="user-name">${item.login}</p>

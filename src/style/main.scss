@@ -105,6 +105,13 @@ body {
     height: 100%;
     overflow: auto;
 
+    .letter-header {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid map-get($map: $color, $key: gray);
+        color: #999999;
+    }
+
     .item {
         display: flex;
         align-items: center;
