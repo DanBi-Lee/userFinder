@@ -11,9 +11,21 @@ class FavoriteUserSearchBox {
 
   userlist = favoriteList();
 
+  serachOnFavoriteList = (e) => {
+    e.preventDefault();
+    const keyword = e.target.querySelector("#searchInput").value;
+    const userlist = favoriteList();
+    const data = userlist.filter((user) => user.login.includes(keyword));
+    this.searchResult.setData(data);
+  };
+
   render() {
-    new SearchBox(this.target, this.type);
-    new SearchResult(this.target, this.type, this.userlist);
+    this.searchBox = new SearchBox(
+      this.target,
+      this.type,
+      this.serachOnFavoriteList
+    );
+    this.searchResult = new SearchResult(this.target, this.type, this.userlist);
   }
 }
 
