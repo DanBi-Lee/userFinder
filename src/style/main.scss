@@ -101,6 +101,7 @@ body {
 
 .search-result {
     padding: 20px;
+    padding-top: 0px;
     margin: 20px;
     box-sizing: border-box;
     height: 100%;
@@ -119,6 +120,10 @@ body {
         margin-bottom: 10px;
         border-bottom: 1px solid map-get($map: $color, $key: gray);
         color: #999999;
+
+        &:first-of-type {
+            margin-top: 0px;
+        }
     }
 
     .item {
@@ -142,7 +147,6 @@ body {
             width: 32px;
             height: 32px;
             color: #999;
-            filter : invert(52%) sepia(81%) saturate(17%) hue-rotate(22deg) brightness(100%) contrast(94%);
             border: 1px solid;
             padding: 6px;
             border-radius: 50%;
