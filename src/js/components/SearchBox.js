@@ -24,7 +24,6 @@ class SearchBox {
   onSearch = (e) => {
     e.preventDefault();
 
-    console.log(this.type);
     switch (this.type) {
       // 즐겨찾기 검색
       case "FAVORITE":
@@ -39,11 +38,32 @@ class SearchBox {
       default:
         throw new Error("정의되지 않은 타입");
     }
+
     this.searchResult.setScroll(0);
   };
 
   searchOnGithub = async (e) => {
-    const data = await getUsers(e.target.querySelector("#searchInput").value);
+    let data;
+    try {
+      this.searchResult.setState({
+        loading: true,
+        data: [],
+        error: null,
+      });
+      data = await getUsers(e.target.querySelector("#searchInput").value);
+    } catch (e) {
+      console.log(e.message);
+      this.searchResult.setState({
+        loading: false,
+        error: e.message,
+      });
+      return;
+    }
+    this.searchResult.setState({
+      loading: false,
+      data: data.items,
+      error: null,
+    });
     this.data.GITHUB.userList = data.items;
     this.setSearchResult(data);
   };

@@ -1,6 +1,7 @@
 @charset 'utf-8';
 @import  './base/reset';
 @import  './base/common';
+@import './base/animation';
 
 body {
     display: flex;
@@ -104,6 +105,14 @@ body {
     box-sizing: border-box;
     height: 100%;
     overflow: auto;
+
+    .message {
+        text-align: center;
+    }
+
+    .loading-spinner{
+        animation: loading 1s infinite;
+    }
 
     .letter-header {
         margin-top: 20px;

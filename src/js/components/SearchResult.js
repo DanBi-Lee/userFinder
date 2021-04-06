@@ -3,20 +3,26 @@ import favoriteOn from "../../images/favorite-on.svg";
 import { favoriteData, favoriteList } from "../util/favorite";
 import { customCompare } from "../util/sortString";
 import { getInitial, checkHangul } from "../util/stringHandling";
+import loadingSpinner from "../../images/loading-spinner.png";
 
 class SearchResult {
   data = {
     searchResult: [],
+    state: {
+      loading: false,
+      data: [],
+      error: null,
+    },
   };
 
   constructor(target, type, userList) {
     this.target = target;
     this.type = type;
-    this.data.searchResult = userList || [];
+    this.data.state.data = userList || [];
     this.searchResult = document.createElement("section");
     this.searchResult.classList = "search-result";
     this.target.append(this.searchResult);
-    this.render(this.data.searchResult);
+    this.render(this.data.state.data);
     this.init();
   }
 
@@ -79,12 +85,21 @@ class SearchResult {
     this.type = type;
   };
 
+  setState = (state) => {
+    this.data = {
+      ...this.data,
+      state: { ...this.data.state, ...state },
+    };
+
+    this.render(this.data.state.data);
+  };
+
   setData = (data) => {
     this.data = {
       ...this.data,
-      searchResult: data,
+      state: { ...this.data.state, data },
     };
-    this.render(this.data.searchResult);
+    this.render(this.data.state.data);
   };
 
   getFirstLetter = (username) => {
@@ -106,7 +121,7 @@ class SearchResult {
       header = this.getFirstLetter(user.login);
     } else if (
       this.getFirstLetter(user.login) !==
-      this.getFirstLetter(this.data.searchResult[index - 1].login)
+      this.getFirstLetter(this.data.state.data[index - 1].login)
     ) {
       header = this.getFirstLetter(user.login);
     }
@@ -119,6 +134,29 @@ class SearchResult {
   };
 
   render(data) {
+    // 로딩중 화면
+    if (this.data.state.loading) {
+      return (this.searchResult.innerHTML = `<div class="message">
+        <img class="loading-spinner" src=${loadingSpinner} width="60" height="60" />
+        <p>검색중 입니다.</p>
+      </div>`);
+    }
+    // 에러 발생 화면
+    if (this.data.state.error) {
+      return (this.searchResult.innerHTML = `<div class="message">
+          <p>오류가 발생했습니다.</p>
+          <p>${this.data.state.error}</p>
+        </div>`);
+    }
+
+    // 결과가 0일 때 화면
+    if (data.length === 0) {
+      return (this.searchResult.innerHTML = `<div class="message">
+        <p>결과가 없습니다.</p>
+      </div>`);
+    }
+
+    // 정상 적으로 로드된 후 데이터 화면에 뿌리기
     const isFavoriteData = favoriteData();
     return (this.searchResult.innerHTML = data
       .sort((a, b) => customCompare(a.login, b.login))
