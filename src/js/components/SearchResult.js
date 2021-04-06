@@ -44,15 +44,25 @@ class SearchResult {
   setFavorite = (button) => {
     if (button.dataset.favorite === "true") {
       button.dataset.favorite = "false";
+      button.innerHTML = `
+      <span class="hidden">
+        즐겨찾기 추가
+      </span>
+      <img src="${favoriteOff}" title="즐겨찾기 추가" />
+      `;
       button.querySelector("img").src = favoriteOff;
     } else {
       button.dataset.favorite = "true";
-      button.querySelector("img").src = favoriteOn;
+      button.innerHTML = `
+      <span class="hidden">
+        즐겨찾기 삭제
+      </span>
+      <img src="${favoriteOn}" title="즐겨찾기 삭제" />
+      `;
     }
   };
 
   addFavorite = (button, data) => {
-    console.log(data);
     const isFavorite = button.dataset.favorite;
     const list = favoriteList();
     const favoriteData = JSON.parse(localStorage.getItem("favoriteData")) || {};
@@ -166,7 +176,7 @@ class SearchResult {
                <span class="hidden">
                  즐겨찾기 삭제
                </span>
-               <img src="${favoriteOn}" />
+               <img src="${favoriteOn}" title="즐겨찾기 삭제"  />
              </button>
               `
               : `
@@ -176,7 +186,7 @@ class SearchResult {
               <span class="hidden">
                 즐겨찾기 등록
               </span>
-              <img src="${favoriteOff}" />
+              <img src="${favoriteOff}" title="즐겨찾기 등록"  />
             </button>`
           }
         </article>`;
