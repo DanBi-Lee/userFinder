@@ -12,7 +12,7 @@ export const customCompare = (a, b) => {
     else if (0x61 <= code && code <= 0x7a) {
       prefix = "2";
     }
-    // 그외 유니코드
+    // 기타 유니코드
     else {
       prefix = "9";
     }

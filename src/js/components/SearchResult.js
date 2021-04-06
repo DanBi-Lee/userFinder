@@ -110,8 +110,13 @@ class SearchResult {
     return header;
   };
 
+  setScrollReset = () => {
+    this.searchResult.scrollTop = 0;
+  };
+
   render(data) {
     const isFavoriteData = favoriteData();
+    this.setScrollReset();
     return (this.searchResult.innerHTML = data
       .sort((a, b) => customCompare(a.login, b.login))
       .map((item, index) => {
