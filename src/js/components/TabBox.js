@@ -15,6 +15,11 @@ class TabBox {
     this.tabMenu();
   };
 
+  setType = (type) => {
+    this.type = type;
+    this.render();
+  };
+
   tabMenu = () => {
     this.tabBox.addEventListener("click", this.tabEvent);
   };

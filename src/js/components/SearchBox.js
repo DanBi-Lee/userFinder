@@ -1,38 +1,92 @@
-import searchIcon from "../../images/search.svg";
+import { favoriteList } from "../util/favorite";
+import { getUsers } from "../util/search";
+import SearchForm from "./SearchForm";
+import SearchResult from "./SearchResult";
 
 class SearchBox {
-  constructor(target, type, onSearch) {
+  data = {
+    FAVORITE: {
+      userList: favoriteList(),
+      scrollTop: 0,
+    },
+    GITHUB: {
+      userList: [],
+      scrollTop: 0,
+    },
+  };
+
+  constructor(target, type) {
     this.target = target;
     this.type = type;
-    this.onSearch = onSearch;
-    this.form = document.createElement("form");
-    this.form.classList = "search-box";
-    this.target.appendChild(this.form);
-
     this.init();
-    this.render();
   }
 
+  onSearch = (e) => {
+    e.preventDefault();
+
+    console.log(this.type);
+    switch (this.type) {
+      // 즐겨찾기 검색
+      case "FAVORITE":
+        console.log("즐찾");
+        this.serachOnFavoriteList(e);
+        break;
+      // github 전체 사용자 검색
+      case "GITHUB":
+        console.log("전체");
+        this.searchOnGithub(e);
+        break;
+      default:
+        throw new Error("정의되지 않은 타입");
+    }
+    this.searchResult.setScroll(0);
+  };
+
+  searchOnGithub = async (e) => {
+    const data = await getUsers(e.target.querySelector("#searchInput").value);
+    this.data.GITHUB.userList = data.items;
+    this.setSearchResult(data);
+  };
+
+  serachOnFavoriteList = (e) => {
+    const keyword = e.target.querySelector("#searchInput").value;
+    const userlist = favoriteList();
+    const data = userlist.filter((user) => user.login.includes(keyword));
+    this.searchResult.setData(data);
+  };
+
+  setType = (type) => {
+    this.data[this.type].scrollTop = this.searchResult.searchResult.scrollTop;
+
+    this.type = type;
+    if (this.type === "FAVORITE") {
+      this.data[type].userList = favoriteList();
+    }
+
+    this.searchResult.setType(this.type);
+    this.searchResult.setData(this.data[type].userList);
+    this.searchResult.setScroll(this.data[type].scrollTop);
+  };
+
+  setData = (data) => {
+    this.data = data;
+  };
+
+  setSearchResult = (data) => {
+    const userList = data.items;
+    this.searchResult.setData(userList);
+  };
+
   init = () => {
-    this.searchEvent();
+    this.searchBox = new SearchForm(this.target, this.type, this.onSearch);
+    this.searchResult = new SearchResult(
+      this.target,
+      this.type,
+      this.data[this.type].userList
+    );
   };
 
-  searchEvent = () => {
-    this.form.addEventListener("submit", this.onSearch);
-  };
-
-  render = () => {
-    return (this.form.innerHTML = `
-      <fieldset>
-        <legend>검색창 ${this.type}</legend>
-        <label class="hidden" for="serachInput">검색할 사용자명을 입력하세요.</label>
-        <input type="text" placeholder="검색할 사용자명을 입력하세요." value="" class="search-input" id="searchInput" name="searchInput" />
-        <button class="search-button">
-          <img src=${searchIcon} alt="검색" />
-        </button>
-      </fieldset>
-    `);
-  };
+  render = (type) => {};
 }
 
 export default SearchBox;
