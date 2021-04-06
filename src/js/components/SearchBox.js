@@ -1,4 +1,5 @@
 import { favoriteList } from "../util/favorite";
+import { ERROR, START_LOAD, SUCCESS } from "../util/loadingState";
 import { getUsers } from "../util/search";
 import SearchForm from "./SearchForm";
 import SearchResult from "./SearchResult";
@@ -45,34 +46,23 @@ class SearchBox {
   searchOnGithub = async (e) => {
     let data;
     try {
-      this.searchResult.setState({
-        loading: true,
-        data: [],
-        error: null,
-      });
+      this.searchResult.setState(START_LOAD());
       data = await getUsers(e.target.querySelector("#searchInput").value);
     } catch (e) {
       console.log(e.message);
-      this.searchResult.setState({
-        loading: false,
-        error: e.message,
-      });
+      this.searchResult.setState(ERROR(e.message));
       return;
     }
-    this.searchResult.setState({
-      loading: false,
-      data: data.items,
-      error: null,
-    });
+    this.searchResult.setState(SUCCESS(data.items));
     this.data.GITHUB.userList = data.items;
-    this.setSearchResult(data);
+    this.setSearchResult(this.data.GITHUB.userList);
   };
 
   serachOnFavoriteList = (e) => {
     const keyword = e.target.querySelector("#searchInput").value;
     const userlist = favoriteList();
     const data = userlist.filter((user) => user.login.includes(keyword));
-    this.searchResult.setData(data);
+    this.searchResult.setState(SUCCESS(data));
   };
 
   setType = (type) => {
@@ -84,7 +74,7 @@ class SearchBox {
     }
 
     this.searchResult.setType(this.type);
-    this.searchResult.setData(this.data[type].userList);
+    this.searchResult.setState(SUCCESS(this.data[type].userList));
     this.searchResult.setScroll(this.data[type].scrollTop);
   };
 
@@ -93,8 +83,7 @@ class SearchBox {
   };
 
   setSearchResult = (data) => {
-    const userList = data.items;
-    this.searchResult.setData(userList);
+    this.searchResult.setState(SUCCESS(data));
   };
 
   init = () => {

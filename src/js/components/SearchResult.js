@@ -4,15 +4,12 @@ import { favoriteData, favoriteList } from "../util/favorite";
 import { customCompare } from "../util/sortString";
 import { getInitial, checkHangul } from "../util/stringHandling";
 import loadingSpinner from "../../images/loading-spinner.png";
+import { INITIAL_STATE } from "../util/loadingState";
 
 class SearchResult {
   data = {
     searchResult: [],
-    state: {
-      loading: false,
-      data: [],
-      error: null,
-    },
+    state: INITIAL_STATE(),
   };
 
   constructor(target, type, userList) {
@@ -94,14 +91,6 @@ class SearchResult {
     this.render(this.data.state.data);
   };
 
-  setData = (data) => {
-    this.data = {
-      ...this.data,
-      state: { ...this.data.state, data },
-    };
-    this.render(this.data.state.data);
-  };
-
   getFirstLetter = (username) => {
     let firstLetter;
     const code = username.toLowerCase().charCodeAt(0);
@@ -136,7 +125,8 @@ class SearchResult {
   render(data) {
     // 로딩중 화면
     if (this.data.state.loading) {
-      return (this.searchResult.innerHTML = `<div class="message">
+      return (this.searchResult.innerHTML = `
+      <div class="message">
         <img class="loading-spinner" src=${loadingSpinner} width="60" height="60" />
         <p>검색중 입니다.</p>
       </div>`);
