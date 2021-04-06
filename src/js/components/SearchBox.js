@@ -59,9 +59,11 @@ class SearchBox {
   };
 
   serachOnFavoriteList = (e) => {
-    const keyword = e.target.querySelector("#searchInput").value;
+    const keyword = e.target.querySelector("#searchInput").value.toLowerCase();
     const userlist = favoriteList();
-    const data = userlist.filter((user) => user.login.includes(keyword));
+    const data = userlist.filter((user) =>
+      user.login.toLowerCase().includes(keyword)
+    );
     this.searchResult.setState(SUCCESS(data));
   };
 
