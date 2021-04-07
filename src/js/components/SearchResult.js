@@ -159,7 +159,6 @@ class SearchResult {
     if (this.data.state.error) {
       return (this.searchResult.innerHTML = `<div class="message">
           <p>오류가 발생했습니다.</p>
-          <p>${this.data.state.error}</p>
         </div>`);
     }
 

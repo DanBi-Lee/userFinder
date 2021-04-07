@@ -4,7 +4,7 @@
 
 ## 사용된 기술 스택 🛠
 
-- jvascript, html, scss (+postCSS)
+- javascript, html, scss (+postCSS)
 - webpack (사용 패키지는 페이지 하단에 기술)
 
 ## 실행 방법 ✨

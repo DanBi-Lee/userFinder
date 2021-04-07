@@ -33,6 +33,12 @@ class SearchBox {
         break;
       // github 전체 사용자 검색
       case "GITHUB":
+        if (e.target.querySelector("#searchInput").value === "") {
+          // 검색어가 빈칸일 경우 검색되지 않음
+          return;
+        }
+        console.log(e.target.value);
+        console.log("???");
         this.searchOnGithub(e);
         break;
       default:
@@ -49,8 +55,7 @@ class SearchBox {
       this.searchResult.setState(START_LOAD());
       data = await getUsers(e.target.querySelector("#searchInput").value);
     } catch (e) {
-      console.log(e.message);
-      this.searchResult.setState(ERROR(e.message));
+      this.searchResult.setState(ERROR(e));
       return;
     }
     this.searchResult.setState(SUCCESS(data.items));
