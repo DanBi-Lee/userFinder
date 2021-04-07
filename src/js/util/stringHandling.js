@@ -37,10 +37,10 @@ const initialList = [
 ];
 
 export const getInitial = (word) => {
-  const ga = 44032;
-  let uni = word.charCodeAt(0);
-  uni = uni - ga;
-  let initialIndex = parseInt(uni / 588);
+  const startCode = "가".charCodeAt(0);
+  let code = word.charCodeAt(0);
+  code = code - startCode;
+  let initialIndex = parseInt(code / 28 / 21);
 
   return initialList[initialIndex];
 };
