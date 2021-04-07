@@ -1,4 +1,6 @@
 import "../style/main.scss";
 import "@babel/polyfill";
+import App from "./app";
 
-console.log("start");
+const $app = document.querySelector("#app");
+new App($app);

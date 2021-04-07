@@ -22,6 +22,7 @@ module.exports = {
   plugins: [
     new HtmlWebpaclPlugin({
       template: "./src/index.html",
+      favicon: "./src/images/favicon.svg",
       minify: isProduction
         ? {
             collapseWhitespace: true,
