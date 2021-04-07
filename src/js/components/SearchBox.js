@@ -37,8 +37,6 @@ class SearchBox {
           // 검색어가 빈칸일 경우 검색되지 않음
           return;
         }
-        console.log(e.target.value);
-        console.log("???");
         this.searchOnGithub(e);
         break;
       default:
