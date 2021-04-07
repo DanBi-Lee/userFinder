@@ -14,9 +14,9 @@ class App {
 
   setData = (data) => {
     this.data = data;
-    // this.render();
   };
 
+  // 타입이 전환되면 tabBox와 searchBox에 타입 전달
   setSearchType = (type) => {
     const data = { ...this.data, type };
     this.setData(data);
@@ -30,6 +30,7 @@ class App {
     this.searchBox = new SearchBox(this.target, this.data.type);
   };
 
+  // 탭메뉴 이벤트
   handlingTabMenu = (e) => {
     if (e.target.nodeName !== "BUTTON") {
       return;

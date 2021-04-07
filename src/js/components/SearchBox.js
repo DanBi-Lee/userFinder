@@ -22,18 +22,17 @@ class SearchBox {
     this.init();
   }
 
+  // 검색시 타입에 따라 다른 검색 방식 작동
   onSearch = (e) => {
     e.preventDefault();
 
     switch (this.type) {
       // 즐겨찾기 검색
       case "FAVORITE":
-        console.log("즐찾");
         this.serachOnFavoriteList(e);
         break;
       // github 전체 사용자 검색
       case "GITHUB":
-        console.log("전체");
         this.searchOnGithub(e);
         break;
       default:
@@ -43,6 +42,7 @@ class SearchBox {
     this.searchResult.setScroll(0);
   };
 
+  // Github에서 검색할 때 로직
   searchOnGithub = async (e) => {
     let data;
     try {
@@ -58,6 +58,7 @@ class SearchBox {
     this.setSearchResult(this.data.GITHUB.userList);
   };
 
+  // 로컬 저장소(즐겨찾기)에서  검색할 때 로직
   serachOnFavoriteList = (e) => {
     const keyword = e.target.querySelector("#searchInput").value.toLowerCase();
     const userlist = favoriteList();
@@ -67,6 +68,7 @@ class SearchBox {
     this.searchResult.setState(SUCCESS(data));
   };
 
+  // 타입이 변할 때 동작
   setType = (type) => {
     this.data[this.type].scrollTop = this.searchResult.searchResult.scrollTop;
 
@@ -96,8 +98,6 @@ class SearchBox {
       this.data[this.type].userList
     );
   };
-
-  render = (type) => {};
 }
 
 export default SearchBox;

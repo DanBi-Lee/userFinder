@@ -31,61 +31,72 @@ class SearchResult {
     this.searchResult.addEventListener("click", this.onFavorite);
   };
 
+  // 즐겨찾기 버튼 동작
   onFavorite = (e) => {
     if (!e.target.closest(".favorite-button")) {
       return;
     }
     const button = e.target.closest(".favorite-button");
     const userData = JSON.parse(button.dataset.data);
-    this.addFavorite(button, userData);
-    this.setFavorite(button);
+    this.setFavorite(button, userData);
   };
 
-  setFavorite = (button) => {
-    if (button.dataset.favorite === "true") {
-      button.dataset.favorite = "false";
-      button.innerHTML = `
-      <span class="hidden">
-        즐겨찾기 추가
-      </span>
-      <img src="${favoriteOff}" title="즐겨찾기 추가" />
-      `;
-      button.querySelector("img").src = favoriteOff;
-    } else {
-      button.dataset.favorite = "true";
-      button.innerHTML = `
-      <span class="hidden">
-        즐겨찾기 삭제
-      </span>
-      <img src="${favoriteOn}" title="즐겨찾기 삭제" />
-      `;
-    }
-  };
-
-  addFavorite = (button, data) => {
-    const isFavorite = button.dataset.favorite;
+  // 즐겨찾기 추가 / 삭제 : DOM 동작
+  setFavorite = (button, data) => {
     const list = favoriteList();
     const favoriteData = JSON.parse(localStorage.getItem("favoriteData")) || {};
+    const isFavorite = button.dataset.favorite;
     switch (isFavorite) {
       case "false":
-        localStorage.setItem("favorite", JSON.stringify([...list, data]));
-        localStorage.setItem(
-          "favoriteData",
-          JSON.stringify({ ...favoriteData, [data.id]: true })
-        );
+        this.addFavorite(data, list, favoriteData, button);
         break;
       case "true":
-        const filterData = list.filter((user) => user.id !== data.id);
-        localStorage.setItem("favorite", JSON.stringify(filterData));
-        localStorage.setItem(
-          "favoriteData",
-          JSON.stringify({ ...favoriteData, [data.id]: false })
-        );
-        this.type === "FAVORITE" && button.closest(".item").remove();
+        this.removeFavorite(data, list, favoriteData, button);
         break;
       default:
         throw new Error("정의되지 않은 커맨드");
     }
+  };
+
+  // 즐겨찾기 추가
+  addFavorite = (data, list, favoriteData, button) => {
+    // DOM 조작
+    button.dataset.favorite = "true";
+    button.innerHTML = `
+    <span class="hidden">
+      즐겨찾기 삭제
+    </span>
+    <img src="${favoriteOn}" title="즐겨찾기 삭제" />
+    `;
+
+    // 로컬 저장소 동작
+    localStorage.setItem("favorite", JSON.stringify([...list, data]));
+    localStorage.setItem(
+      "favoriteData",
+      JSON.stringify({ ...favoriteData, [data.id]: true })
+    );
+  };
+
+  // 즐겨찾기 삭제
+  removeFavorite = (data, list, favoriteData, button) => {
+    // DOM 조작
+    button.dataset.favorite = "false";
+    button.innerHTML = `
+    <span class="hidden">
+      즐겨찾기 추가
+    </span>
+    <img src="${favoriteOff}" title="즐겨찾기 추가" />
+    `;
+    button.querySelector("img").src = favoriteOff;
+
+    // 로컬 저장소 동작
+    const filterData = list.filter((user) => user.id !== data.id);
+    localStorage.setItem("favorite", JSON.stringify(filterData));
+    localStorage.setItem(
+      "favoriteData",
+      JSON.stringify({ ...favoriteData, [data.id]: false })
+    );
+    this.type === "FAVORITE" && button.closest(".item").remove();
   };
 
   setType = (type) => {
@@ -101,6 +112,7 @@ class SearchResult {
     this.render(this.data.state.data);
   };
 
+  // 첫글자 따오기 (한글이면 초성, 그 외면 첫글자)
   getFirstLetter = (username) => {
     let firstLetter;
     const code = username.toLowerCase().charCodeAt(0);
@@ -114,6 +126,7 @@ class SearchResult {
     return header;
   };
 
+  // 따온 첫글자 헤더 만들기
   setFirstLetterHeader = (user, index) => {
     let header = "";
     if (index === 0) {
@@ -128,6 +141,7 @@ class SearchResult {
     return header;
   };
 
+  // 스크롤 위치
   setScroll = (scrollTop) => {
     this.searchResult.scrollTop = scrollTop || 0;
   };

@@ -11,10 +11,12 @@ class TabBox {
     this.init();
   }
 
+  // 최초로 생성되었을 때만 탭메뉴 이벤트 등록
   init = () => {
     this.tabMenu();
   };
 
+  // 타입이 바뀌면 tabBox 새로 렌더링
   setType = (type) => {
     this.type = type;
     this.render();
@@ -24,6 +26,7 @@ class TabBox {
     this.tabBox.addEventListener("click", this.tabEvent);
   };
 
+  // 타입에 따라 다르게 렌더링
   render() {
     return (this.tabBox.innerHTML = `
       <button class=${
